@@ -1895,7 +1895,7 @@ export function useZorvantaApi() {
     if (tenantId) headers.set("X-Tenant-ID", tenantId);
     headers.set("Content-Type", "application/json");
 
-    const res = await fetch(\`https://api.zorvanta.ai\${endpoint}\`, { ...options, headers });
+    const res = await fetch(\`https://zovanta-api-1.onrender.com\${endpoint}\`, { ...options, headers });
     if (!res.ok) throw new Error(\`ZORVANTA API Error: \${res.statusText}\`);
     return res.json();
   }
