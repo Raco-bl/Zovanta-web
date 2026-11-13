@@ -2034,6 +2034,8 @@ CREATE POLICY tenant_isolation_policy ON brand_dna_vault
     // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
       updateSim();
+      sessionStorage.clear()
+      localStorage.clear()
       switchCodeTab('fastapi');
     });
   </script>
