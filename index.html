@@ -1453,6 +1453,242 @@
       }
     });
 
+    // --- CUSTOM TOAST NOTIFICATION ---
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const borderColor = type === 'success' ? 'border-emerald-400/60' : 'border-silver/30';
+      const dotColor = type === 'success' ? 'bg-emerald-400' : 'bg-silver';
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl bg-navy text-white text-xs border ${borderColor} shadow-command animate-fadeIn`;
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full ${dotColor} shrink-0"></span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.2s ease';
+        setTimeout(() => toast.remove(), 200);
+      }, 3200);
+    }
+
+    // --- CROSS-PLATFORM AD PERFORMANCE CHART (Chart.js) ---
+    let adChartInstance = null;
+    let currentMetric = 'roas';
+    let currentTimeframe = '7d';
+
+    const adChartDatasets = {
+      '7d': {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        roas: {
+          Meta: [4.2, 4.4, 4.5, 4.7, 4.8, 4.9, 4.85],
+          Google: [3.9, 4.0, 4.1, 4.2, 4.3, 4.25, 4.30],
+          LinkedIn: [3.6, 3.7, 3.8, 3.9, 4.0, 3.9, 3.95],
+          TikTok: [4.3, 4.5, 4.8, 4.9, 5.0, 5.2, 5.10],
+          X: [3.0, 3.1, 3.2, 3.15, 3.3, 3.2, 3.25],
+        },
+        conversions: {
+          Meta: [145, 160, 172, 185, 198, 210, 218],
+          Google: [120, 128, 134, 140, 149, 152, 158],
+          LinkedIn: [62, 68, 71, 75, 82, 79, 85],
+          TikTok: [110, 132, 154, 178, 195, 224, 240],
+          X: [45, 48, 50, 49, 53, 51, 54],
+        },
+        spend: {
+          Meta: [1650, 1700, 1780, 1850, 1920, 2000, 2050],
+          Google: [1400, 1420, 1450, 1480, 1510, 1500, 1540],
+          LinkedIn: [950, 980, 1000, 1020, 1050, 1010, 1040],
+          TikTok: [850, 920, 1050, 1150, 1250, 1380, 1450],
+          X: [520, 510, 500, 490, 480, 470, 460],
+        }
+      },
+      '30d': {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        roas: {
+          Meta: [4.1, 4.4, 4.7, 4.85],
+          Google: [3.8, 4.0, 4.2, 4.30],
+          LinkedIn: [3.5, 3.7, 3.85, 3.95],
+          TikTok: [4.0, 4.5, 4.9, 5.10],
+          X: [2.9, 3.1, 3.2, 3.25],
+        },
+        conversions: {
+          Meta: [980, 1120, 1290, 1420],
+          Google: [820, 890, 960, 1040],
+          LinkedIn: [410, 460, 510, 560],
+          TikTok: [740, 950, 1180, 1490],
+          X: [310, 330, 345, 360],
+        },
+        spend: {
+          Meta: [11200, 12100, 13000, 13800],
+          Google: [9500, 9800, 10200, 10600],
+          LinkedIn: [6400, 6800, 7100, 7300],
+          TikTok: [5800, 7100, 8400, 9600],
+          X: [3600, 3500, 3400, 3250],
+        }
+      }
+    };
+
+    function initAdChart() {
+      const ctx = document.getElementById('crossPlatformAdChart');
+      if (!ctx) return;
+      if (adChartInstance) adChartInstance.destroy();
+
+      const dataObj = adChartDatasets[currentTimeframe];
+      const metricData = dataObj[currentMetric];
+
+      adChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dataObj.labels,
+          datasets: [
+            {
+              label: 'Meta Ads',
+              data: metricData.Meta,
+              borderColor: '#101820',
+              backgroundColor: 'rgba(16, 24, 32, 0.08)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3.5,
+            },
+            {
+              label: 'TikTok Ads',
+              data: metricData.TikTok,
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.08)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3.5,
+            },
+            {
+              label: 'Google Ads',
+              data: metricData.Google,
+              borderColor: '#3B82F6',
+              backgroundColor: 'rgba(59, 130, 246, 0.08)',
+              borderWidth: 2,
+              tension: 0.35,
+              pointRadius: 3,
+            },
+            {
+              label: 'LinkedIn',
+              data: metricData.LinkedIn,
+              borderColor: '#0EA5E9',
+              backgroundColor: 'rgba(14, 165, 233, 0.08)',
+              borderWidth: 2,
+              tension: 0.35,
+              pointRadius: 3,
+            },
+            {
+              label: 'X (Twitter)',
+              data: metricData.X,
+              borderColor: '#64748B',
+              borderDash: [4, 4],
+              borderWidth: 2,
+              tension: 0.35,
+              pointRadius: 2.5,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                boxWidth: 8,
+                font: { family: 'Inter', size: 11, weight: '600' },
+                color: '#101820'
+              }
+            },
+            tooltip: {
+              backgroundColor: '#101820',
+              titleFont: { family: 'Inter', size: 12, weight: '700' },
+              bodyFont: { family: 'Inter', size: 11 },
+              padding: 10,
+              cornerRadius: 10,
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 11 }, color: '#64748B' }
+            },
+            y: {
+              grid: { color: '#F1F5F9' },
+              ticks: {
+                font: { family: 'Inter', size: 11 },
+                color: '#64748B',
+                callback: function(value) {
+                  if (currentMetric === 'roas') return value + 'x';
+                  if (currentMetric === 'spend') return '$' + value;
+                  return value;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateAdChartMetric(metric) {
+      currentMetric = metric;
+      ['roas', 'conversions', 'spend'].forEach(m => {
+        const btn = document.getElementById(`metric-${m}`);
+        if (btn) {
+          btn.className = m === metric
+            ? 'chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-navy text-white transition-all'
+            : 'chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate hover:text-navy transition-all';
+        }
+      });
+      initAdChart();
+    }
+
+    function updateAdChartTimeframe() {
+      currentTimeframe = document.getElementById('chart-timeframe').value;
+      initAdChart();
+    }
+
+    // --- AI OPTIMIZATION & CO-PILOT INTERACTIONS ---
+    function triggerAiOptimization() {
+      document.getElementById('overview-roas').textContent = '4.68x';
+      const feed = document.getElementById('live-agent-feed');
+      feed.insertAdjacentHTML('afterbegin', `
+        <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-start gap-3 animate-fadeIn">
+          <div class="w-8 h-8 rounded-xl bg-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">AI</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-navy">Zorvanta AI • Instant Cross-Channel Rebalance</span>
+              <span class="text-[10px] text-emerald-700 font-semibold">Just now</span>
+            </div>
+            <p class="text-xs text-slate mt-1">Reallocated $310 from low-CTR X campaigns into top-performing TikTok & Meta ad sets. Projected blended ROAS lifted to 4.68x.</p>
+          </div>
+        </div>
+      `);
+      showToast('AI Re-Optimization complete! Blended ROAS projected at 4.68x.', 'success');
+    }
+
+    function handleCopilotSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('copilot-input');
+      const box = document.getElementById('copilot-messages');
+      const text = input.value.trim();
+      if (!text) return;
+
+      box.insertAdjacentHTML('beforeend', `
+        <div class="p-2.5 rounded-xl bg-silver text-navy font-medium ml-6">${text}</div>
+      `);
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+
+      setTimeout(() => {
+        box.insertAdjacentHTML('beforeend', `
+          <div class="p-3 rounded-xl bg-white/10 border border-white/10 text-silver mr-4 animate-fadeIn">
+            <strong class="text-white">AI Co-Pilot:</strong> Executed "${text}". TikTok & Meta pacing rules updated and synced with your Brand DNA guardrails.
+          </div>
+        `);
+        box.scrollTop = box.scrollHeight;
+      }, 450);
+    }
+
     function saveWorkspaceSettings() {
       const model = document.getElementById('setting-ai-model').value;
       document.getElementById('sidebar-model-badge').textContent = `Model: ${model}`;
@@ -1772,4 +2008,35 @@ CREATE TABLE tenants (
 
 CREATE TABLE brand_dna_vault (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    tenant_id UUID NOT 
+    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    source_title TEXT NOT NULL,
+    chunk_content TEXT NOT NULL,
+    embedding VECTOR(1536)
+);
+
+ALTER TABLE brand_dna_vault ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY tenant_isolation_policy ON brand_dna_vault
+    FOR ALL USING (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::UUID);`
+    };
+
+    function switchCodeTab(lang) {
+      ['fastapi', 'clerk', 'client', 'sql'].forEach(l => {
+        const btn = document.getElementById(`codetab-${l}`);
+        if (btn) btn.className = "code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold text-slate hover:text-navy";
+      });
+      const activeBtn = document.getElementById(`codetab-${lang}`);
+      if (activeBtn) activeBtn.className = "code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold bg-white border-t border-x border-[#E2E8F0] text-navy";
+
+      document.getElementById('code-content-view').textContent = codeSnippets[lang];
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSim();
+      switchCodeTab('fastapi');
+    });
+  </script>
+</body>
+
+  </html>
