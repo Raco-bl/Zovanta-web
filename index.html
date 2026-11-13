@@ -1772,34 +1772,4 @@ CREATE TABLE tenants (
 
 CREATE TABLE brand_dna_vault (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
-    source_title TEXT NOT NULL,
-    chunk_content TEXT NOT NULL,
-    embedding VECTOR(1536)
-);
-
-ALTER TABLE brand_dna_vault ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY tenant_isolation_policy ON brand_dna_vault
-    FOR ALL USING (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::UUID);`
-    };
-
-    function switchCodeTab(lang) {
-      ['fastapi', 'clerk', 'client', 'sql'].forEach(l => {
-        const btn = document.getElementById(`codetab-${l}`);
-        if (btn) btn.className = "code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold text-slate hover:text-navy";
-      });
-      const activeBtn = document.getElementById(`codetab-${lang}`);
-      if (activeBtn) activeBtn.className = "code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold bg-white border-t border-x border-[#E2E8F0] text-navy";
-
-      document.getElementById('code-content-view').textContent = codeSnippets[lang];
-    }
-
-    // Initialize on load
-    window.addEventListener('DOMContentLoaded', () => {
-      updateSim();
-      switchCodeTab('fastapi');
-    });
-  </script>
-</body>
-                  </html>
+    tenant_id UUID NOT 
