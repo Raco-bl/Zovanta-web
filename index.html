@@ -1,208 +1,1951 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101820" />
-  <title>ZORVANTA — Command Center</title>
-  <style>
-    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #101820; background: #f4f7fa; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 15% 10%, #e6ecf1 0, transparent 34rem), #f4f7fa; }
-    button, input { font: inherit; }
-    .topbar { background: #101820; color: white; padding: 1rem clamp(1rem, 5vw, 4rem); display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    .brand { display: flex; align-items: center; gap: .75rem; font-weight: 800; letter-spacing: .2em; }
-    .brand-mark { width: 2.5rem; height: 2.5rem; border-radius: .75rem; display: grid; place-items: center; color: #101820; background: white; letter-spacing: 0; }
-    .tagline { display: block; color: #a7b8c7; font-size: .72rem; font-weight: 400; letter-spacing: .04em; margin-top: .2rem; }
-    main { width: min(100% - 2rem, 68rem); margin: clamp(2rem, 7vh, 5rem) auto; }
-    .panel { background: white; border: 1px solid #e2e8f0; border-radius: 1.25rem; box-shadow: 0 12px 35px #10182012; padding: clamp(1.25rem, 4vw, 2.5rem); }
-    .auth-panel { width: min(100%, 30rem); margin: 0 auto; }
-    h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -.04em; }
-    .muted { color: #64748b; line-height: 1.6; }
-    form { display: grid; gap: 1rem; margin-top: 1.5rem; }
-    label { display: grid; gap: .45rem; color: #101820; font-size: .875rem; font-weight: 650; }
-    input { width: 100%; padding: .8rem .9rem; border: 1px solid #cbd5e1; border-radius: .7rem; background: #f8fafc; color: #101820; }
-    input:focus { outline: 3px solid #38bdf833; border-color: #0284c7; }
-    button { border: 0; border-radius: .7rem; background: #101820; color: white; font-weight: 700; padding: .85rem 1rem; cursor: pointer; }
-    button:hover { background: #243746; }
-    button:disabled { opacity: .65; cursor: wait; }
-    .status { min-height: 1.5rem; margin: .9rem 0 0; font-size: .875rem; }
-    .status.error { color: #b91c1c; }
-    .status.success { color: #047857; }
-    .dashboard { display: none; }
-    .dashboard-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
-    .dashboard-heading button { padding: .6rem .9rem; background: #e6ecf1; color: #101820; }
-    .dashboard-heading button:hover { background: #cbd5e1; }
-    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-    .metric { padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 1rem; background: #f8fafc; }
-    .metric-label { color: #64748b; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-    .metric-value { margin-top: .7rem; font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 800; letter-spacing: -.04em; overflow-wrap: anywhere; }
-    @media (max-width: 640px) { .metrics { grid-template-columns: 1fr; } .dashboard-heading { flex-direction: column; } }
-  </style>
-</head>
-<body>
-  <header class="topbar">
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Z</span><span>ZORVANTA<span class="tagline">Intelligence. Simplified.</span></span></div>
-    <span class="tagline">Command Center</span>
-  </header>
-
-  <main>
-    <section id="auth-panel" class="panel auth-panel" aria-labelledby="login-title">
-      <h1 id="login-title">Sign in to your workspace</h1>
-      <p class="muted">Use your account credentials to access live dashboard data.</p>
-      <form id="login-form">
-        <label for="login-email">Work email
-          <input id="login-email" name="email" type="email" autocomplete="username" placeholder="you@company.com" required />
-        </label>
-        <label for="login-password">Password
-          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required />
-        </label>
-        <button id="login-button" type="submit">Sign in</button>
-      </form>
-      <p id="auth-status" class="status" role="status" aria-live="polite"></p>
-    </section>
-
-    <section id="dashboard" class="panel dashboard" aria-labelledby="dashboard-title">
-      <div class="dashboard-heading">
-        <div>
-          <h1 id="dashboard-title">Command Center</h1>
-          <p class="muted">Live metrics from your ZORVANTA workspace.</p>
-        </div>
-        <button id="sign-out-button" type="button">Sign out</button>
-      </div>
-      <div class="metrics" aria-live="polite">
-        <article class="metric"><div class="metric-label">Total users</div><div id="metric-total-users" class="metric-value">—</div></article>
-        <article class="metric"><div class="metric-label">Active projects</div><div id="metric-active-projects" class="metric-value">—</div></article>
-        <article class="metric"><div class="metric-label">Revenue</div><div id="metric-revenue" class="metric-value">—</div></article>
-      </div>
-      <p id="dashboard-status" class="status" role="status" aria-live="polite"></p>
-    </section>
-  </main>
+  <title>ZORVANTA — Intelligence. Simplified.</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js for Multi-Channel Ad Performance -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <script>
-    (() => {
-      'use strict';
-
-      const API_BASE_URL = 'https://zovanta-api-1.onrender.com';
-      const TOKEN_KEY = 'zorvanta_auth_token';
-      const authPanel = document.getElementById('auth-panel');
-      const dashboard = document.getElementById('dashboard');
-      const form = document.getElementById('login-form');
-      const loginButton = document.getElementById('login-button');
-      const authStatus = document.getElementById('auth-status');
-      const dashboardStatus = document.getElementById('dashboard-status');
-
-      function setStatus(element, message, type = '') {
-        element.textContent = message;
-        element.className = `status${type ? ` ${type}` : ''}`;
-      }
-
-      function showDashboard(isVisible) {
-        authPanel.style.display = isVisible ? 'none' : 'block';
-        dashboard.style.display = isVisible ? 'block' : 'none';
-      }
-
-      async function readJson(response) {
-        let data;
-        try {
-          data = await response.json();
-        } catch {
-          throw new Error('The server returned an invalid response.');
-        }
-        if (!response.ok) {
-          throw new Error(data.detail || data.message || `Request failed (${response.status}).`);
-        }
-        return data;
-      }
-
-      async function loadDashboard(token) {
-        setStatus(dashboardStatus, 'Loading live dashboard data…');
-        try {
-          const response = await fetch(`${API_BASE_URL}/api/dashboard`, {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `Bearer ${token}`
-            }
-          });
-          const data = await readJson(response);
-          if (data.status !== 'success' || !data.metrics || typeof data.metrics !== 'object') {
-            throw new Error('Dashboard response did not include the expected metrics.');
-          }
-
-          const metrics = data.metrics;
-          document.getElementById('metric-total-users').textContent = metrics.totalUsers ?? '—';
-          document.getElementById('metric-active-projects').textContent = metrics.activeProjects ?? '—';
-          document.getElementById('metric-revenue').textContent = metrics.revenue ?? '—';
-          setStatus(dashboardStatus, 'Dashboard data updated.', 'success');
-        } catch (error) {
-          if (error instanceof TypeError) {
-            setStatus(dashboardStatus, 'Could not reach the API. Check your connection and backend CORS settings.', 'error');
-          } else {
-            setStatus(dashboardStatus, error.message || 'Unable to load dashboard data.', 'error');
-          }
-          if (/401|403|unauthorized|forbidden/i.test(error.message || '')) {
-            sessionStorage.removeItem(TOKEN_KEY);
-            showDashboard(false);
-            setStatus(authStatus, 'Your session has expired. Please sign in again.', 'error');
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#101820',
+            'navy-light': '#182430',
+            'navy-card': '#141E28',
+            silver: '#A7B8C7',
+            'silver-light': '#E6ECF1',
+            slate: '#64748B',
+            canvas: '#F4F7FA',
+            accent: '#38BDF8',
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          boxShadow: {
+            'subtle': '0 1px 3px 0 rgba(16, 24, 32, 0.05), 0 1px 2px -1px rgba(16, 24, 32, 0.03)',
+            'card': '0 10px 30px -5px rgba(16, 24, 32, 0.08)',
+            'command': '0 20px 50px -12px rgba(16, 24, 32, 0.35)',
+            'glow': '0 0 25px rgba(167, 184, 199, 0.18)',
           }
         }
       }
+    };
+  </script>
 
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        setStatus(authStatus, 'Signing in…');
-        loginButton.disabled = true;
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F4F7FA;
+      color: #101820;
+    }
+    /* Subtle architectural grid background for auth screen */
+    .bg-grid-navy {
+      background-color: #101820;
+      background-image: 
+        radial-gradient(circle at 20% 25%, rgba(167, 184, 199, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    }
+    /* Custom Range Slider */
+    input[type="range"].zorvanta-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+    input[type="range"].zorvanta-slider::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: #E2E8F0;
+      border-radius: 999px;
+    }
+    input[type="range"].zorvanta-slider::-webkit-slider-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #101820;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 0 1px #A7B8C7, 0 2px 6px rgba(16,24,32,0.25);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+      transition: transform 0.15s ease;
+    }
+    input[type="range"].zorvanta-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    /* Toggle Switch */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #101820;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #101820;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 999px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="h-full overflow-hidden bg-canvas">
 
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value;
-        try {
-          const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ======================================================== -->
+  <!-- SIGN-IN GATEWAY OVERLAY (Entry Screen) -->
+  <!-- ======================================================== -->
+  <div id="auth-gateway" class="fixed inset-0 z-50 bg-grid-navy flex items-center justify-center p-4 overflow-y-auto">
+    <div class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden border border-white/10 shadow-command bg-navy-light/90 backdrop-blur-xl animate-fadeIn">
+      
+      <!-- Left Brand Showcase Panel -->
+      <div class="lg:col-span-6 p-8 sm:p-12 flex flex-col justify-between bg-gradient-to-br from-[#101820] via-[#131E29] to-[#1A2938] border-b lg:border-b-0 lg:border-r border-white/10">
+        <div>
+          <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 rounded-xl bg-white text-navy flex items-center justify-center font-extrabold tracking-widest text-sm shadow-glow">
+              Z
+            </div>
+            <div>
+              <span class="font-bold tracking-[0.25em] text-base text-white block leading-none">ZORVANTA</span>
+              <span class="text-[11px] text-silver tracking-wider">Intelligence. Simplified.</span>
+            </div>
+          </div>
+
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-silver/20 text-silver text-xs font-medium mb-5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Autonomous Growth OS 2.0
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight mb-4">
+            Four Marketing Engines. <span class="text-silver">One Command Center.</span>
+          </h1>
+          <p class="text-sm text-silver/80 leading-relaxed mb-8">
+            Sign in to access your Brand DNA Vault, live multi-platform ROAS telemetry, and closed-loop AI media buying agents.
+          </p>
+        </div>
+
+        <!-- Live Telemetry Preview Pill -->
+        <div class="grid grid-cols-3 gap-3 pt-6 border-t border-white/10">
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[10px] uppercase tracking-wider text-silver">Avg ROAS</div>
+            <div class="text-lg font-bold text-white mt-0.5">4.42x</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[10px] uppercase tracking-wider text-silver">Channels</div>
+            <div class="text-lg font-bold text-white mt-0.5">5 Live</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[10px] uppercase tracking-wider text-silver">RLS Security</div>
+            <div class="text-lg font-bold text-emerald-400 mt-0.5">Active</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sign-In Form Panel -->
+      <div class="lg:col-span-6 p-8 sm:p-12 bg-white text-navy flex flex-col justify-center">
+        <div class="mb-7">
+          <h2 class="text-2xl font-bold text-navy tracking-tight">Sign in to Workspace</h2>
+          <p class="text-xs text-slate mt-1">Enter your credentials or launch an instant demo workspace.</p>
+        </div>
+
+        <form onsubmit="handleSignIn(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-navy mb-1.5">Work Email</label>
+            <input
+              type="email"
+              id="login-email"
+              required
+              value="alex.mercer@acmecorp.io"
+              placeholder="you@company.com"
+              class="w-full px-4 py-3 rounded-xl bg-canvas border border-[#CBD5E1] text-sm text-navy focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/10 transition-all"
+            />
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-semibold text-navy">Password</label>
+              <button type="button" onclick="showToast('Password reset link dispatched to your inbox.', 'info')" class="text-[11px] font-medium text-slate hover:text-navy">Forgot password?</button>
+            </div>
+            <input
+              type="password"
+              id="login-password"
+              required
+              value="••••••••••••"
+              placeholder="Enter password"
+              class="w-full px-4 py-3 rounded-xl bg-canvas border border-[#CBD5E1] text-sm text-navy focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/10 transition-all"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-navy mb-1.5">Select Brand Workspace</label>
+            <select id="login-workspace" class="w-full px-4 py-3 rounded-xl bg-canvas border border-[#CBD5E1] text-sm text-navy focus:outline-none focus:border-navy">
+              <option value="Acme Corp Global|Agency Plan|12,000 Credits|AC">Acme Corp Global (Agency Plan)</option>
+              <option value="Veloce E-Commerce|Growth Plan|9,850 Credits|VE">Veloce E-Commerce (Growth Plan)</option>
+              <option value="Nordic SaaS Labs|Enterprise|Unlimited Credits|NS">Nordic SaaS Labs (Enterprise)</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full py-3.5 px-6 rounded-xl bg-navy text-white font-semibold text-sm hover:bg-navy-light transition-all shadow-card flex items-center justify-center gap-2 mt-2"
+          >
+            <span>Enter ZORVANTA Command Center</span>
+            <span>→</span>
+          </button>
+        </form>
+
+        <div class="relative my-6">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#E2E8F0]"></div></div>
+          <div class="relative flex justify-center text-[11px] uppercase"><span class="bg-white px-3 text-slate font-medium">Or continue with</span></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" onclick="quickDemoLogin('Google SSO')" class="py-2.5 px-4 rounded-xl border border-[#CBD5E1] bg-canvas hover:bg-silver-light/50 text-xs font-semibold text-navy flex items-center justify-center gap-2 transition-colors">
+            <span class="font-bold text-sm">G</span> Google SSO
+          </button>
+          <button type="button" onclick="quickDemoLogin('Clerk Passkey')" class="py-2.5 px-4 rounded-xl border border-[#CBD5E1] bg-canvas hover:bg-silver-light/50 text-xs font-semibold text-navy flex items-center justify-center gap-2 transition-colors">
+            <span class="font-bold text-sm">⌘</span> Clerk Passkey
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MAIN APPLICATION SHELL (Hidden until signed in) -->
+  <!-- ======================================================== -->
+  <div id="app-shell" class="h-full flex flex-col overflow-hidden hidden">
+
+    <!-- TOP HEADER & COMMAND BAR -->
+    <header class="bg-navy text-white px-4 lg:px-8 py-3.5 border-b border-white/10 shrink-0 flex items-center justify-between z-30 shadow-subtle">
+      <div class="flex items-center gap-3">
+        <!-- Mobile Menu Toggle -->
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-lg bg-white/10 text-silver hover:text-white focus:outline-none" aria-label="Toggle Menu">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-white text-navy flex items-center justify-center font-extrabold tracking-widest text-xs shadow-glow">
+            Z
+          </div>
+          <div>
+            <span class="font-bold tracking-[0.22em] text-sm">ZORVANTA</span>
+            <span class="hidden sm:inline-block ml-2 text-[10px] uppercase px-2 py-0.5 rounded-full bg-white/10 text-silver font-medium border border-white/10">OS 2.0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Command Bar Trigger -->
+      <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
+        <button onclick="toggleCommandModal(true)" class="w-full flex items-center justify-between px-4 py-2 rounded-xl bg-navy-light border border-silver/20 text-silver text-xs hover:border-silver/50 transition-all shadow-inner">
+          <span class="flex items-center gap-2">
+            <svg class="w-3.5 h-3.5 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Ask ZORVANTA AI or trigger cross-channel actions...
+          </span>
+          <kbd class="px-2 py-0.5 rounded bg-white/10 text-[10px] text-silver font-mono border border-white/10">⌘K</kbd>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex flex-col text-right">
+          <span id="header-workspace-name" class="text-xs font-semibold text-white">Acme Corp Global</span>
+          <span id="header-workspace-meta" class="text-[10px] text-silver">Agency Plan • 12,000 Credits</span>
+        </div>
+        <button onclick="switchTab('settings')" title="Workspace Settings" class="w-9 h-9 rounded-xl bg-silver/15 border border-silver/35 flex items-center justify-center text-xs font-bold text-white hover:bg-silver hover:text-navy transition-all">
+          <span id="header-avatar">AC</span>
+        </button>
+        <button onclick="handleSignOut()" title="Sign Out" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-400/40 text-[11px] font-medium text-silver hover:text-red-200 transition-all">
+          Sign Out
+        </button>
+      </div>
+    </header>
+
+    <!-- APP LAYOUT CONTAINER -->
+    <div class="flex-1 flex overflow-hidden relative">
+      
+      <!-- MOBILE SIDEBAR BACKDROP -->
+      <div id="sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="fixed inset-0 bg-navy/60 backdrop-blur-xs z-30 hidden lg:hidden"></div>
+
+      <!-- LEFT SIDEBAR NAVIGATION -->
+      <aside id="app-sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-navy text-silver flex flex-col shrink-0 border-r border-white/10 select-none transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-200 ease-out">
+        <div class="px-4 py-3.5 flex items-center justify-between border-b border-white/10 lg:border-none">
+          <span class="text-[10px] font-semibold tracking-wider text-slate uppercase">Core Platform</span>
+          <button onclick="toggleMobileSidebar(false)" class="lg:hidden text-silver hover:text-white text-xs p-1">✕</button>
+        </div>
+
+        <nav class="flex-1 px-3 space-y-1 overflow-y-auto custom-scrollbar">
+          <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-white bg-white/10 border border-silver/25 shadow-subtle">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Command Center
+          </button>
+
+          <button onclick="switchTab('create')" id="nav-create" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            1. Zorvanta Create
+          </button>
+
+          <button onclick="switchTab('growth')" id="nav-growth" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            2. Zorvanta Growth
+          </button>
+
+          <button onclick="switchTab('automate')" id="nav-automate" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            3. Zorvanta Automate
+          </button>
+
+          <button onclick="switchTab('insights')" id="nav-insights" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            4. Zorvanta Insights
+          </button>
+
+          <div class="pt-4 pb-1.5 px-3 text-[10px] font-semibold tracking-wider text-slate uppercase">
+            Growth Tools & Config
+          </div>
+
+          <button onclick="switchTab('simulator')" id="nav-simulator" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            SaaS Unit Economics
+          </button>
+
+          <button onclick="switchTab('audit')" id="nav-audit" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Brand DNA Audit Tool
+          </button>
+
+          <button onclick="switchTab('code')" id="nav-code" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            Production Code Ref
+          </button>
+
+          <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white">
+            <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Workspace Settings
+          </button>
+        </nav>
+
+        <!-- Sidebar AI Engine Card -->
+        <div class="p-4 border-t border-white/10">
+          <div class="p-3.5 rounded-2xl bg-gradient-to-br from-navy-light to-[#1F2F3F] border border-silver/20">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] font-semibold text-white">Zorvanta AI Engine</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            </div>
+            <p id="sidebar-model-badge" class="text-[10px] text-silver font-mono">Model: GPT-4o + Claude 3.7</p>
+            <p class="text-[10px] text-silver/70 mt-1">5 ad channels synced in real time.</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT AREA -->
+      <main class="flex-1 overflow-y-auto custom-scrollbar p-4 lg:p-8">
+        
+        <!-- ======================================================== -->
+        <!-- TAB 1: COMMAND CENTER & MULTI-PLATFORM AD CHART -->
+        <!-- ======================================================== -->
+        <section id="tab-overview" class="space-y-6 max-w-7xl mx-auto animate-fadeIn">
+          
+          <!-- Executive Hero Banner -->
+          <div class="rounded-3xl bg-gradient-to-r from-[#101820] via-[#16222E] to-[#1D2D3D] p-6 sm:p-8 text-white border border-silver/20 shadow-card flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-silver text-[11px] font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                AI Autopilot Active • All 5 Ad Platforms Connected
+              </div>
+              <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Welcome back, <span id="welcome-user-name" class="text-silver">Alex</span>.</h1>
+              <p class="text-xs sm:text-sm text-silver/80 leading-relaxed">
+                ZORVANTA AI reallocated <strong class="text-white">$420</strong> toward high-converting Meta & LinkedIn creatives overnight, lifting blended ROAS to <strong class="text-emerald-400">4.42x</strong>.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 shrink-0">
+              <button onclick="triggerAiOptimization()" class="px-4 py-2.5 bg-white text-navy text-xs font-bold rounded-xl hover:bg-silver transition-all shadow-glow flex items-center gap-2">
+                <span>⚡ Run AI Re-Optimization</span>
+              </button>
+              <button onclick="switchTab('settings')" class="px-4 py-2.5 bg-white/10 text-white border border-white/15 text-xs font-semibold rounded-xl hover:bg-white/20 transition-all">
+                Configure Channels
+              </button>
+            </div>
+          </div>
+
+          <!-- High-Level KPI Summary -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-subtle hover:shadow-card transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate uppercase tracking-wider">Blended ROAS</span>
+                <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">+18.4%</span>
+              </div>
+              <div id="overview-roas" class="text-3xl font-extrabold text-navy mt-3">4.42x</div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Attributed Revenue</span>
+                <span class="font-semibold text-navy">$164,920</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-subtle hover:shadow-card transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate uppercase tracking-wider">Total Ad Spend</span>
+                <span class="text-[11px] font-semibold text-navy bg-silver-light px-2.5 py-0.5 rounded-full">5 Apps</span>
+              </div>
+              <div class="text-3xl font-extrabold text-navy mt-3">$37,310</div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Avg CPA Across Apps</span>
+                <span class="font-semibold text-emerald-600">$28.40 (-12%)</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-subtle hover:shadow-card transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate uppercase tracking-wider">Brand DNA Vectors</span>
+                <span class="text-[11px] font-semibold text-navy bg-silver-light px-2.5 py-0.5 rounded-full">pgvector</span>
+              </div>
+              <div class="text-3xl font-extrabold text-navy mt-3">1,420</div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Brand Alignment</span>
+                <span class="font-semibold text-navy">96.8% match</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-subtle hover:shadow-card transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate uppercase tracking-wider">AI Credits Left</span>
+                <span class="text-[11px] font-semibold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full">Active</span>
+              </div>
+              <div class="text-3xl font-extrabold text-navy mt-3">9,850</div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Monthly Quota</span>
+                <span class="font-semibold text-navy">12,000 Credits</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CROSS-PLATFORM AD PERFORMANCE CHART (Meta, Google, LinkedIn, TikTok, X) -->
+          <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-5">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#F1F5F9] pb-4">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-base font-bold text-navy">Cross-Platform Ad Performance</h2>
+                  <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-navy text-white">Live Telemetry</span>
+                </div>
+                <p class="text-xs text-slate mt-0.5">Compare ROAS, Conversions, and Ad Spend across every connected online app</p>
+              </div>
+
+              <!-- Chart Metric & Timeframe Controls -->
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="inline-flex rounded-xl bg-canvas p-1 border border-[#E2E8F0]">
+                  <button onclick="updateAdChartMetric('roas')" id="metric-roas" class="chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-navy text-white transition-all">ROAS (x)</button>
+                  <button onclick="updateAdChartMetric('conversions')" id="metric-conversions" class="chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate hover:text-navy transition-all">Conversions</button>
+                  <button onclick="updateAdChartMetric('spend')" id="metric-spend" class="chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate hover:text-navy transition-all">Ad Spend ($)</button>
+                </div>
+                <select id="chart-timeframe" onchange="updateAdChartTimeframe()" class="px-3 py-2 rounded-xl bg-canvas border border-[#E2E8F0] text-xs font-semibold text-navy focus:outline-none">
+                  <option value="7d">Last 7 Days</option>
+                  <option value="30d">Last 30 Days</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Chart.js Canvas Container -->
+            <div class="relative h-72 w-full">
+              <canvas id="crossPlatformAdChart"></canvas>
+            </div>
+
+            <!-- Per-App Breakdown Strip -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2 border-t border-[#F1F5F9]">
+              <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0]">
+                <div class="flex items-center justify-between text-xs font-bold text-navy">
+                  <span>Meta Ads</span>
+                  <span class="w-2 h-2 rounded-full bg-[#101820]"></span>
+                </div>
+                <div class="text-sm font-extrabold text-navy mt-1">4.85x ROAS</div>
+                <div class="text-[11px] text-emerald-600 font-medium">+22% conv.</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0]">
+                <div class="flex items-center justify-between text-xs font-bold text-navy">
+                  <span>Google Ads</span>
+                  <span class="w-2 h-2 rounded-full bg-[#3B82F6]"></span>
+                </div>
+                <div class="text-sm font-extrabold text-navy mt-1">4.30x ROAS</div>
+                <div class="text-[11px] text-emerald-600 font-medium">+14% conv.</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0]">
+                <div class="flex items-center justify-between text-xs font-bold text-navy">
+                  <span>LinkedIn</span>
+                  <span class="w-2 h-2 rounded-full bg-[#0EA5E9]"></span>
+                </div>
+                <div class="text-sm font-extrabold text-navy mt-1">3.95x ROAS</div>
+                <div class="text-[11px] text-emerald-600 font-medium">High B2B LTV</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0]">
+                <div class="flex items-center justify-between text-xs font-bold text-navy">
+                  <span>TikTok Ads</span>
+                  <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+                </div>
+                <div class="text-sm font-extrabold text-navy mt-1">5.10x ROAS</div>
+                <div class="text-[11px] text-emerald-600 font-medium">+34% viral lift</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0] col-span-2 sm:col-span-1">
+                <div class="flex items-center justify-between text-xs font-bold text-navy">
+                  <span>X (Twitter)</span>
+                  <span class="w-2 h-2 rounded-full bg-[#64748B]"></span>
+                </div>
+                <div class="text-sm font-extrabold text-navy mt-1">3.25x ROAS</div>
+                <div class="text-[11px] text-slate font-medium">Steady pacing</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Closed-Loop Activity Feed & Co-Pilot -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+              <div class="flex items-center justify-between border-b border-[#F1F5F9] pb-4">
+                <div>
+                  <h2 class="text-sm font-bold text-navy">Autonomous AI Execution Log</h2>
+                  <p class="text-xs text-slate mt-0.5">Live actions performed by ZORVANTA agents across channels</p>
+                </div>
+                <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                  ● Synced
+                </span>
+              </div>
+
+              <div id="live-agent-feed" class="space-y-3">
+                <div class="p-4 rounded-xl bg-canvas border border-[#E2E8F0] flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">G</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-navy">Zorvanta Growth • Cross-App Reallocation</span>
+                      <span class="text-[10px] text-slate">2 mins ago</span>
+                    </div>
+                    <p class="text-xs text-slate mt-1">Shifted 18% daily budget from underperforming X static ads to TikTok Spark Ads & Meta Reels after detecting a 5.10x ROAS surge.</p>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-canvas border border-[#E2E8F0] flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-silver text-navy flex items-center justify-center shrink-0 font-bold text-xs">C</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-navy">Zorvanta Create • Brand DNA Variant</span>
+                      <span class="text-[10px] text-slate">14 mins ago</span>
+                    </div>
+                    <p class="text-xs text-slate mt-1">Generated 5 high-contrast LinkedIn carousel variants aligned with Brand DNA vector chunk #14.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive ZORVANTA AI Co-Pilot Card -->
+            <div class="lg:col-span-5 bg-navy text-white p-6 rounded-2xl border border-silver/25 shadow-card flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <h2 class="text-sm font-bold text-white">ZORVANTA AI Co-Pilot</h2>
+                  </div>
+                  <span class="text-[10px] font-mono text-silver bg-white/10 px-2 py-0.5 rounded">Agentic v2</span>
+                </div>
+                <div id="copilot-messages" class="space-y-2.5 max-h-48 overflow-y-auto custom-scrollbar pr-1 text-xs">
+                  <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-silver">
+                    <strong class="text-white">AI Co-Pilot:</strong> Ask me to audit any ad channel, draft copy from your Brand DNA, or shift ad spend.
+                  </div>
+                </div>
+              </div>
+
+              <form onsubmit="handleCopilotSubmit(event)" class="flex gap-2 pt-2">
+                <input
+                  type="text"
+                  id="copilot-input"
+                  placeholder="e.g., Boost TikTok budget by 15%..."
+                  class="flex-1 px-3.5 py-2.5 rounded-xl bg-navy-light border border-silver/25 text-xs text-white placeholder-silver/50 focus:outline-none focus:border-silver"
+                />
+                <button type="submit" class="px-4 py-2.5 rounded-xl bg-silver text-navy font-bold text-xs hover:bg-white transition-colors">
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 2: ZORVANTA CREATE (CONTENT STUDIO) -->
+        <!-- ======================================================== -->
+        <section id="tab-create" class="hidden space-y-8 max-w-7xl mx-auto animate-fadeIn">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Pillar 01</span>
+              <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">Zorvanta Create — AI Content Studio</h1>
+              <p class="text-sm text-slate mt-0.5">Generate on-brand campaigns at scale without prompt fatigue using your Brand DNA Vault.</p>
+            </div>
+            <button onclick="showToast('Brand DNA sync successful! Vault vector index updated.', 'success')" class="px-4 py-2.5 bg-navy text-white text-xs font-semibold rounded-xl hover:bg-navy-light transition-colors">
+              + Ingest New Brand Guideline PDF
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+              <div class="flex items-center justify-between border-b border-[#F1F5F9] pb-4">
+                <div>
+                  <h2 class="text-sm font-semibold text-navy">Brand DNA Vault</h2>
+                  <p class="text-xs text-slate mt-0.5">Vector chunks indexed via pgvector</p>
+                </div>
+                <span class="text-xs font-mono text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">Connected</span>
+              </div>
+
+              <div class="space-y-3">
+                <div class="p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-semibold text-navy">Tone & Voice Guidelines</span>
+                    <span class="text-[10px] text-slate font-mono">1536 dims</span>
+                  </div>
+                  <p class="text-xs text-slate">"ZORVANTA speaks with calm authority. Avoid hype, exclamation marks, and buzzwords. Lead with clarity and measurable outcomes."</p>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-semibold text-navy">Visual Palette & Rules</span>
+                    <span class="text-[10px] text-slate font-mono">1536 dims</span>
+                  </div>
+                  <p class="text-xs text-slate">"Midnight Navy (#101820) primary with White (#FFFFFF) cards and Silver Blue (#A7B8C7) crisp borders."</p>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-semibold text-navy">Top Past-Performing Copy</span>
+                    <span class="text-[10px] text-slate font-mono">1536 dims</span>
+                  </div>
+                  <p class="text-xs text-slate">"Stop duct-taping 4 AI tools together. Onboard a client's Brand DNA in 60 seconds."</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+              <div class="border-b border-[#F1F5F9] pb-4">
+                <h2 class="text-sm font-semibold text-navy">Multi-Channel Campaign Generator</h2>
+                <p class="text-xs text-slate mt-0.5">Generate full campaign kits from a single prompt</p>
+              </div>
+
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-xs font-medium text-navy mb-1.5">Campaign Brief / Goal</label>
+                  <input type="text" id="create-brief" value="Launch Q4 enterprise automation package for marketing agencies" class="w-full px-3.5 py-2.5 bg-canvas border border-[#CBD5E1] rounded-xl text-xs text-navy focus:outline-none focus:border-navy" />
+                </div>
+
+                <button onclick="simulateAssetGeneration()" class="w-full py-3 bg-navy text-white text-xs font-semibold rounded-xl hover:bg-navy-light transition-colors shadow-subtle flex items-center justify-center gap-2">
+                  <span>⚡ Generate Campaign Kit (Copy, Scripts & Variants)</span>
+                </button>
+              </div>
+
+              <div id="create-results-container" class="space-y-3 pt-2">
+                <div class="p-4 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-semibold text-navy">Meta Ad Headline Variant #1</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-silver-light text-navy font-mono">Brand DNA Aligned</span>
+                  </div>
+                  <p class="text-xs text-slate italic">"The Autonomous Growth OS for Marketing Agencies. Intelligence. Simplified."</p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-semibold text-navy">LinkedIn Sponsored Post</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-silver-light text-navy font-mono">Long-Form B2B</span>
+                  </div>
+                  <p class="text-xs text-slate italic">"Stop managing 14 open tabs. ZORVANTA unifies content creation, autonomous media buying, and client reporting into one Midnight Navy workspace."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 3: ZORVANTA GROWTH (AUTONOMOUS MEDIA BUYER) -->
+        <!-- ======================================================== -->
+        <section id="tab-growth" class="hidden space-y-8 max-w-7xl mx-auto animate-fadeIn">
+          <div>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Pillar 02</span>
+            <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">Zorvanta Growth — Autonomous Media Buyer</h1>
+            <p class="text-sm text-slate mt-0.5">Real-time budget pacing, predictive audience lookalikes, and GEO/SEO optimization.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-8 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-6">
+              <div class="flex items-center justify-between border-b border-[#F1F5F9] pb-4">
+                <div>
+                  <h2 class="text-sm font-semibold text-navy">Active Campaign Media Pacing</h2>
+                  <p class="text-xs text-slate mt-0.5">Autonomous bidding & budget allocation across Meta, Google & TikTok</p>
+                </div>
+                <span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">Optimizing 24/7</span>
+              </div>
+
+              <div class="space-y-4">
+                <div class="p-4 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-navy">Q4 Agency Acquisition (Meta Ads)</span>
+                    <span class="text-xs font-medium text-emerald-700">$1,200 / day pacing</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div class="bg-navy h-full rounded-full" style="width: 78%;"></div>
+                  </div>
+                  <div class="flex justify-between text-[11px] text-slate mt-2">
+                    <span>Spend: $936 today</span>
+                    <span>ROAS: 4.85x</span>
+                    <span>CPA: $29.10</span>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-navy">SaaS Founder Retargeting (Google & AI Search)</span>
+                    <span class="text-xs font-medium text-emerald-700">$800 / day pacing</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div class="bg-navy h-full rounded-full" style="width: 64%;"></div>
+                  </div>
+                  <div class="flex justify-between text-[11px] text-slate mt-2">
+                    <span>Spend: $512 today</span>
+                    <span>ROAS: 4.30x</span>
+                    <span>CPA: $34.50</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+              <div>
+                <h2 class="text-sm font-semibold text-navy">Predictive Audience Builder</h2>
+                <p class="text-xs text-slate mt-0.5">High-intent lookalike segmentation</p>
+              </div>
+
+              <div class="space-y-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="font-semibold text-navy mb-1">Agency Growth Leaders (1% Lookalike)</div>
+                  <p class="text-slate">Behavioral signals mapped from 450 top-converting agency tenant profiles.</p>
+                  <div class="mt-2 text-emerald-700 font-medium">Estimated Reach: 1.4M users</div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                  <div class="font-semibold text-navy mb-1">AI-Search (GEO) Optimization</div>
+                  <p class="text-slate">Optimized brand knowledge graph for ChatGPT, Perplexity & Google SGE indexing.</p>
+                  <div class="mt-2 text-emerald-700 font-medium">GEO Visibility Score: 98.4%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 4: ZORVANTA AUTOMATE (WORKFLOW CANVAS) -->
+        <!-- ======================================================== -->
+        <section id="tab-automate" class="hidden space-y-8 max-w-7xl mx-auto animate-fadeIn">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Pillar 03</span>
+              <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">Zorvanta Automate — Agentic Workflow Canvas</h1>
+              <p class="text-sm text-slate mt-0.5">Visual node-based canvas for autonomous lead nurturing and human-in-the-loop approval gates.</p>
+            </div>
+            <button onclick="showToast('Workflow state saved & deployed successfully via Temporal!', 'success')" class="px-4 py-2.5 bg-navy text-white text-xs font-semibold rounded-xl hover:bg-navy-light transition-colors">
+              Deploy Workflow
+            </button>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-6">
+            <div class="flex items-center justify-between border-b border-[#F1F5F9] pb-4">
+              <div>
+                <h2 class="text-sm font-semibold text-navy">Visual Node Builder (React Flow Engine)</h2>
+                <p class="text-xs text-slate mt-0.5">Triggers, AI agents, decision branches, and approval checkpoints</p>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-medium">Active Status: Running</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 py-4 relative items-center">
+              <div class="p-4 rounded-xl bg-canvas border-2 border-navy relative">
+                <div class="absolute -top-3 left-3 bg-navy text-white text-[10px] px-2 py-0.5 rounded font-mono">Trigger 01</div>
+                <div class="text-xs font-semibold text-navy mt-1">Inbound Lead Form Submitted</div>
+                <p class="text-[11px] text-slate mt-1">Webhook from landing page Lead Magnet or SaaS signup.</p>
+              </div>
+
+              <div class="hidden md:flex items-center justify-center text-slate font-bold text-lg">→</div>
+
+              <div class="p-4 rounded-xl bg-canvas border border-[#CBD5E1] relative">
+                <div class="absolute -top-3 left-3 bg-silver text-navy text-[10px] px-2 py-0.5 rounded font-mono">AI Agent</div>
+                <div class="text-xs font-semibold text-navy mt-1">Brand DNA Enrichment</div>
+                <p class="text-[11px] text-slate mt-1">Scrapes URL & extracts semantic brand voice profile.</p>
+              </div>
+
+              <div class="hidden md:flex items-center justify-center text-slate font-bold text-lg">→</div>
+
+              <div class="p-4 rounded-xl bg-canvas border-2 border-amber-500 relative">
+                <div class="absolute -top-3 left-3 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded font-mono">Approval Gate</div>
+                <div class="text-xs font-semibold text-navy mt-1">Manager Sign-Off</div>
+                <p class="text-[11px] text-slate mt-1">Pauses until campaign budget scale is approved.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 5: ZORVANTA INSIGHTS & ATTRIBUTION -->
+        <!-- ======================================================== -->
+        <section id="tab-insights" class="hidden space-y-8 max-w-7xl mx-auto animate-fadeIn">
+          <div>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Pillar 04</span>
+            <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">Zorvanta Insights & Attribution</h1>
+            <p class="text-sm text-slate mt-0.5">Clarity over vanity metrics: multi-touch attribution, anomaly alerts, and conversational data analyst.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle flex flex-col h-[500px]">
+              <div class="border-b border-[#F1F5F9] pb-3 mb-3">
+                <h2 class="text-sm font-semibold text-navy">Conversational Data Analyst</h2>
+                <p class="text-xs text-slate">Ask plain-English questions about ROI and ClickHouse attribution tables</p>
+              </div>
+
+              <div id="analyst-chat-history" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2 mb-4">
+                <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0] text-xs text-navy">
+                  <strong>Zorvanta Analyst:</strong> Hello! I am connected to your ClickHouse analytics warehouse. Ask me about Meta, Google, LinkedIn, TikTok, or X ad performance.
+                </div>
+              </div>
+
+              <div class="flex gap-2">
+                <input type="text" id="analyst-input" placeholder="e.g., Compare TikTok vs Meta ROAS over the last 7 days" class="flex-1 px-3.5 py-2.5 bg-canvas border border-[#CBD5E1] rounded-xl text-xs text-navy focus:outline-none focus:border-navy" />
+                <button onclick="sendAnalystQuery()" class="px-5 py-2.5 bg-navy text-white text-xs font-semibold rounded-xl hover:bg-navy-light transition-colors">
+                  Ask
+                </button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+              <div class="border-b border-[#F1F5F9] pb-4">
+                <h2 class="text-sm font-semibold text-navy">Executive Anomaly Alerts</h2>
+                <p class="text-xs text-slate mt-0.5">Proactive explanations of metric shifts</p>
+              </div>
+
+              <div class="space-y-3 text-xs">
+                <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-semibold text-amber-950">CPA Increase Detected (X Ads)</span>
+                    <span class="text-[10px] text-amber-800">1 hour ago</span>
+                  </div>
+                  <p class="text-amber-900">"X Ads CPA rose 14% due to creative fatigue on static ad set #2. Zorvanta Create has automatically queued 3 fresh video hooks."</p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-semibold text-emerald-950">TikTok ROAS Surge (5.10x)</span>
+                    <span class="text-[10px] text-emerald-800">3 hours ago</span>
+                  </div>
+                  <p class="text-emerald-900">"TikTok Spark Ads creative #4 is outperforming benchmarks by 38%. Budget automatically reallocated +15%."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 6: SAAS UNIT ECONOMICS & REVENUE SIMULATOR -->
+        <!-- ======================================================== -->
+        <section id="tab-simulator" class="hidden space-y-8 max-w-7xl mx-auto animate-fadeIn">
+          <div>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Financial Model</span>
+            <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">SaaS Unit Economics & Revenue Simulator</h1>
+            <p class="text-sm text-slate mt-0.5">Interactive sliders for Starter ($79), Growth ($249), and Agency ($699) pricing tiers, inference costs, and profit margins.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle flex flex-col justify-between">
+              <div class="text-xs font-semibold text-slate uppercase tracking-wider">Monthly Recurring Revenue</div>
+              <div class="mt-3 flex items-baseline justify-between">
+                <div id="kpi-mrr" class="text-3xl font-bold text-navy">$0</div>
+                <span id="kpi-arr-badge" class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">ARR: $0</span>
+              </div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Blended ARPU</span>
+                <span id="kpi-arpu" class="font-semibold text-navy">$0 / mo</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle flex flex-col justify-between">
+              <div class="text-xs font-semibold text-slate uppercase tracking-wider">Gross Profit Margin</div>
+              <div class="mt-3 flex items-baseline justify-between">
+                <div id="kpi-margin" class="text-3xl font-bold text-navy">0%</div>
+                <span class="text-xs font-medium text-navy bg-silver-light px-2 py-0.5 rounded-full">Target: &gt;80%</span>
+              </div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Monthly Gross Profit</span>
+                <span id="kpi-gross-profit" class="font-semibold text-navy">$0</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle flex flex-col justify-between">
+              <div class="text-xs font-semibold text-slate uppercase tracking-wider">AI Inference & Infra</div>
+              <div class="mt-3 flex items-baseline justify-between">
+                <div id="kpi-inference-cost" class="text-3xl font-bold text-navy">$0</div>
+                <span class="text-xs font-medium text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full">LLM Cost</span>
+              </div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Total Credits Processed</span>
+                <span id="kpi-total-credits" class="font-semibold text-navy">0M / mo</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle flex flex-col justify-between">
+              <div class="text-xs font-semibold text-slate uppercase tracking-wider">Net Operating Profit</div>
+              <div class="mt-3 flex items-baseline justify-between">
+                <div id="kpi-net-profit" class="text-3xl font-bold text-navy">$0</div>
+                <span id="kpi-net-badge" class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Profitable</span>
+              </div>
+              <div class="mt-3 pt-3 border-t border-[#F1F5F9] text-[11px] text-slate flex justify-between">
+                <span>Fixed Overhead Deducted</span>
+                <span id="kpi-fixed-overhead-display" class="font-semibold text-navy">$15,000</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-6 space-y-6">
+              <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-6">
+                <div class="flex items-center justify-between border-b border-[#F1F5F9] pb-4">
+                  <div>
+                    <h2 class="text-sm font-semibold text-navy">Subscriber Volume by Tier</h2>
+                    <p class="text-xs text-slate mt-0.5">Adjust active accounts across ZORVANTA plans</p>
+                  </div>
+                  <span id="total-subscribers-badge" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-canvas text-navy border border-[#E2E8F0]">0 Subs</span>
+                </div>
+
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs">
+                    <div>
+                      <span class="font-semibold text-navy">Starter Plan</span>
+                      <span class="text-slate ml-1.5">($79/mo • 2.5k credits)</span>
+                    </div>
+                    <span class="font-semibold text-navy" id="val-starter-count">120</span>
+                  </div>
+                  <input type="range" min="0" max="2500" step="10" value="120" id="slider-starter" oninput="updateSim()" class="zorvanta-slider" />
+                  <div class="flex justify-between text-[11px] text-slate">
+                    <span>MRR: <strong id="mrr-starter" class="text-navy">$9,480</strong></span>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs">
+                    <div>
+                      <span class="font-semibold text-navy">Growth Plan (Most Popular)</span>
+                      <span class="text-slate ml-1.5">($249/mo • 12k credits)</span>
+                    </div>
+                    <span class="font-semibold text-navy" id="val-growth-count">45</span>
+                  </div>
+                  <input type="range" min="0" max="1000" step="5" value="45" id="slider-growth" oninput="updateSim()" class="zorvanta-slider" />
+                  <div class="flex justify-between text-[11px] text-slate">
+                    <span>MRR: <strong id="mrr-growth" class="text-navy">$11,205</strong></span>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs">
+                    <div>
+                      <span class="font-semibold text-navy">Agency / Scale Plan</span>
+                      <span class="text-slate ml-1.5">($699/mo • 45k credits)</span>
+                    </div>
+                    <span class="font-semibold text-navy" id="val-agency-count">12</span>
+                  </div>
+                  <input type="range" min="0" max="250" step="1" value="12" id="slider-agency" oninput="updateSim()" class="zorvanta-slider" />
+                  <div class="flex justify-between text-[11px] text-slate">
+                    <span>MRR: <strong id="mrr-agency" class="text-navy">$8,388</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-6">
+                <div class="border-b border-[#F1F5F9] pb-4">
+                  <h2 class="text-sm font-semibold text-navy">LLM Inference & Infrastructure Costs</h2>
+                  <p class="text-xs text-slate mt-0.5">Tune AI API token costs and fixed monthly overhead</p>
+                </div>
+
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs">
+                    <span class="font-medium text-navy">AI Inference Cost per 1,000 Credits</span>
+                    <span class="font-semibold text-navy" id="val-inference-cost">$0.35</span>
+                  </div>
+                  <input type="range" min="0.05" max="1.50" step="0.05" value="0.35" id="slider-inference" oninput="updateSim()" class="zorvanta-slider" />
+                </div>
+
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs">
+                    <span class="font-medium text-navy">Fixed Monthly Operating Overhead (OpEx)</span>
+                    <span class="font-semibold text-navy" id="val-overhead">$12,000</span>
+                  </div>
+                  <input type="range" min="1000" max="50000" step="1000" value="12000" id="slider-overhead" oninput="updateSim()" class="zorvanta-slider" />
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-6 space-y-6">
+              <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-6">
+                <div>
+                  <h2 class="text-sm font-semibold text-navy">Monthly Financial Waterfall</h2>
+                  <p class="text-xs text-slate mt-0.5">How MRR flows into gross profit and net operating income</p>
+                </div>
+
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-medium text-navy">1. Gross MRR</span>
+                      <span id="wf-mrr" class="font-semibold text-navy">$29,073</span>
+                    </div>
+                    <div class="w-full h-3 bg-canvas rounded-full overflow-hidden border border-[#E2E8F0]">
+                      <div id="bar-mrr" class="h-full bg-navy rounded-full" style="width: 100%;"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-medium text-slate">2. Less: AI Inference Costs</span>
+                      <span id="wf-inference" class="font-semibold text-amber-700">-$1,240</span>
+                    </div>
+                    <div class="w-full h-3 bg-canvas rounded-full overflow-hidden border border-[#E2E8F0]">
+                      <div id="bar-inference" class="h-full bg-amber-500 rounded-full" style="width: 12%;"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-medium text-navy">3. Gross Profit</span>
+                      <span id="wf-gross" class="font-semibold text-navy">$27,833</span>
+                    </div>
+                    <div class="w-full h-3 bg-canvas rounded-full overflow-hidden border border-[#E2E8F0]">
+                      <div id="bar-gross" class="h-full bg-silver rounded-full" style="width: 88%;"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-medium text-slate">4. Less: Fixed Operating Overhead</span>
+                      <span id="wf-overhead" class="font-semibold text-slate">-$12,000</span>
+                    </div>
+                    <div class="w-full h-3 bg-canvas rounded-full overflow-hidden border border-[#E2E8F0]">
+                      <div id="bar-overhead" class="h-full bg-slate-400 rounded-full" style="width: 40%;"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-semibold text-navy">5. Net Operating Profit</span>
+                      <span id="wf-net" class="font-semibold text-emerald-700">$15,833</span>
+                    </div>
+                    <div class="w-full h-3 bg-canvas rounded-full overflow-hidden border border-[#E2E8F0]">
+                      <div id="bar-net" class="h-full bg-emerald-600 rounded-full" style="width: 54%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-navy text-white p-6 rounded-2xl border border-silver/30 shadow-card space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-semibold uppercase tracking-wider text-silver">Zorvanta AI Financial Analyst</span>
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+                <p id="analyst-insights-text" class="text-xs text-silver/90 leading-relaxed">
+                  Analyzing subscriber mix and profit margins...
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 7: BRAND DNA AUDIT LEAD MAGNET WIDGET -->
+        <!-- ======================================================== -->
+        <section id="tab-audit" class="hidden space-y-8 max-w-4xl mx-auto animate-fadeIn">
+          <div class="bg-[#101820] text-white p-8 sm:p-12 rounded-2xl border border-silver/30 shadow-2xl space-y-6">
+            <div class="text-center">
+              <span class="inline-block px-3 py-1 mb-3 text-xs font-semibold tracking-wider uppercase bg-silver/10 text-silver rounded-full border border-silver/20">
+                Interactive Lead Magnet
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
+                Discover Your Brand DNA in 30 Seconds
+              </h2>
+              <p class="text-sm text-slate max-w-lg mx-auto">
+                Paste your website URL below. ZORVANTA will extract your voice and generate 3 custom ad concepts instantly.
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate">
+                  https://
+                </div>
+                <input
+                  type="text"
+                  id="audit-url-input"
+                  placeholder="yourbrand.com"
+                  value="stripe.com"
+                  class="w-full pl-20 pr-4 py-3.5 bg-[#171923] border border-slate/40 rounded-xl text-white placeholder-slate focus:outline-none focus:border-silver transition-colors"
+                />
+              </div>
+              <button
+                onclick="runBrandAudit()"
+                id="audit-btn"
+                class="px-8 py-3.5 bg-silver text-navy font-semibold rounded-xl hover:bg-white transition-all shrink-0 shadow-lg"
+              >
+                Extract Brand DNA →
+              </button>
+            </div>
+
+            <div id="audit-results" class="hidden space-y-6 pt-4 border-t border-silver/20">
+              <div class="p-6 rounded-xl bg-[#171923] border border-silver/20">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-semibold tracking-wider uppercase text-silver">Extracted Brand Voice Profile</span>
+                  <span id="audit-domain-tag" class="text-xs text-slate font-mono">stripe.com</span>
+                </div>
+                <p id="audit-summary-text" class="text-sm text-gray-200 leading-relaxed">
+                  Clean, authoritative developer-first positioning. Avoids sales hype; emphasizes technical reliability, speed, and modern financial infrastructure.
+                </p>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-white mb-3">Ready-to-Launch Ad Concepts (3 Variants)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="audit-concepts-grid"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 8: PRODUCTION CODE REFERENCE VIEWER -->
+        <!-- ======================================================== -->
+        <section id="tab-code" class="hidden space-y-8 max-w-7xl mx-auto animate-fadeIn">
+          <div>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Architecture Reference</span>
+            <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">Production Code Reference Viewer</h1>
+            <p class="text-sm text-slate mt-0.5">Explore backend code for FastAPI + Supabase RLS, Clerk JWT middleware, and Next.js TypeScript fetch client.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-subtle overflow-hidden">
+            <div class="flex items-center bg-canvas border-b border-[#E2E8F0] px-4 pt-3 gap-2 overflow-x-auto">
+              <button onclick="switchCodeTab('fastapi')" id="codetab-fastapi" class="code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold bg-white border-t border-x border-[#E2E8F0] text-navy">
+                FastAPI + Supabase RLS
+              </button>
+              <button onclick="switchCodeTab('clerk')" id="codetab-clerk" class="code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold text-slate hover:text-navy">
+                Clerk JWT Auth Middleware
+              </button>
+              <button onclick="switchCodeTab('client')" id="codetab-client" class="code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold text-slate hover:text-navy">
+                Next.js TypeScript Fetch Client
+              </button>
+              <button onclick="switchCodeTab('sql')" id="codetab-sql" class="code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold text-slate hover:text-navy">
+                PostgreSQL + pgvector Schema
+              </button>
+            </div>
+
+            <div class="p-6 bg-navy text-silver font-mono text-xs overflow-x-auto max-h-[500px] custom-scrollbar">
+              <pre id="code-content-view">Loading code snippet...</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 9: WORKSPACE & AI SETTINGS HUB -->
+        <!-- ======================================================== -->
+        <section id="tab-settings" class="hidden space-y-8 max-w-5xl mx-auto animate-fadeIn">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-slate bg-silver-light px-2.5 py-1 rounded-md">Configuration</span>
+              <h1 class="text-2xl font-bold text-navy tracking-tight mt-1">Workspace & AI Engine Settings</h1>
+              <p class="text-sm text-slate mt-0.5">Manage AI routing models, autonomous spend guardrails, and connected ad platforms.</p>
+            </div>
+            <button onclick="saveWorkspaceSettings()" class="px-5 py-2.5 bg-navy text-white text-xs font-bold rounded-xl hover:bg-navy-light transition-all shadow-subtle">
+              Save All Changes
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Column: AI Model & Guardrails -->
+            <div class="lg:col-span-6 space-y-6">
+              <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+                <div class="border-b border-[#F1F5F9] pb-3">
+                  <h2 class="text-sm font-bold text-navy">AI Intelligence & Model Routing</h2>
+                  <p class="text-xs text-slate mt-0.5">Choose primary LLM orchestration via LiteLLM</p>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-navy mb-1.5">Primary Orchestration Model</label>
+                  <select id="setting-ai-model" class="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-[#CBD5E1] text-xs font-medium text-navy focus:outline-none focus:border-navy">
+                    <option value="GPT-4o + Claude 3.7">Balanced Hybrid (GPT-4o + Claude 3.7 Sonnet)</option>
+                    <option value="Claude 3.7 Sonnet">Creative Copy Focus (Claude 3.7 Sonnet)</option>
+                    <option value="o3-mini Reasoning">Deep Media Attribution (o3-mini Reasoning)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-navy mb-1.5">Autonomous Budget Guardrail (Max Daily Shift)</label>
+                  <div class="flex items-center gap-3">
+                    <input type="number" id="setting-max-budget" value="2500" class="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-[#CBD5E1] text-xs font-semibold text-navy focus:outline-none focus:border-navy" />
+                    <span class="text-xs font-semibold text-slate shrink-0">USD / day</span>
+                  </div>
+                </div>
+
+                <div class="pt-2 space-y-3">
+                  <label class="flex items-center justify-between p-3 rounded-xl bg-canvas border border-[#E2E8F0] cursor-pointer">
+                    <div>
+                      <div class="text-xs font-semibold text-navy">Human-in-the-Loop Approval Gate</div>
+                      <div class="text-[11px] text-slate">Require sign-off before scaling any ad set above +25%</div>
+                    </div>
+                    <input type="checkbox" checked class="w-4 h-4 accent-navy rounded" />
+                  </label>
+
+                  <label class="flex items-center justify-between p-3 rounded-xl bg-canvas border border-[#E2E8F0] cursor-pointer">
+                    <div>
+                      <div class="text-xs font-semibold text-navy">Auto-Rotate Fatigued Ad Creatives</div>
+                      <div class="text-[11px] text-slate">Automatically pause ads when CTR drops 20% below baseline</div>
+                    </div>
+                    <input type="checkbox" checked class="w-4 h-4 accent-navy rounded" />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Connected Ad Platforms -->
+            <div class="lg:col-span-6 space-y-6">
+              <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-subtle space-y-4">
+                <div class="border-b border-[#F1F5F9] pb-3">
+                  <h2 class="text-sm font-bold text-navy">Connected Online Ad Channels</h2>
+                  <p class="text-xs text-slate mt-0.5">Toggle live telemetry sync for cross-platform reporting</p>
+                </div>
+
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                    <div>
+                      <div class="text-xs font-bold text-navy">Meta Ads (Facebook & Instagram)</div>
+                      <div class="text-[11px] text-emerald-600 font-medium">● Connected • Pixel & CAPI Active</div>
+                    </div>
+                    <input type="checkbox" checked onchange="showToast('Meta Ads telemetry sync updated.', 'info')" class="w-4 h-4 accent-navy" />
+                  </div>
+
+                  <div class="flex items-center justify-between p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                    <div>
+                      <div class="text-xs font-bold text-navy">Google Ads & YouTube</div>
+                      <div class="text-[11px] text-emerald-600 font-medium">● Connected • Enhanced Conversions</div>
+                    </div>
+                    <input type="checkbox" checked onchange="showToast('Google Ads telemetry sync updated.', 'info')" class="w-4 h-4 accent-navy" />
+                  </div>
+
+                  <div class="flex items-center justify-between p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                    <div>
+                      <div class="text-xs font-bold text-navy">LinkedIn Campaign Manager</div>
+                      <div class="text-[11px] text-emerald-600 font-medium">● Connected • B2B Insight Tag</div>
+                    </div>
+                    <input type="checkbox" checked onchange="showToast('LinkedIn Ads telemetry sync updated.', 'info')" class="w-4 h-4 accent-navy" />
+                  </div>
+
+                  <div class="flex items-center justify-between p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                    <div>
+                      <div class="text-xs font-bold text-navy">TikTok For Business</div>
+                      <div class="text-[11px] text-emerald-600 font-medium">● Connected • Spark Ads API</div>
+                    </div>
+                    <input type="checkbox" checked onchange="showToast('TikTok Ads telemetry sync updated.', 'info')" class="w-4 h-4 accent-navy" />
+                  </div>
+
+                  <div class="flex items-center justify-between p-3.5 rounded-xl bg-canvas border border-[#E2E8F0]">
+                    <div>
+                      <div class="text-xs font-bold text-navy">X (Twitter) Ads</div>
+                      <div class="text-[11px] text-emerald-600 font-medium">● Connected • Conversion API</div>
+                    </div>
+                    <input type="checkbox" checked onchange="showToast('X Ads telemetry sync updated.', 'info')" class="w-4 h-4 accent-navy" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE MODAL (⌘K) -->
+  <div id="command-modal" class="fixed inset-0 bg-navy/80 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-20 px-4">
+    <div class="bg-navy border border-silver/30 w-full max-w-xl rounded-2xl shadow-command overflow-hidden text-white">
+      <div class="p-4 border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2.5 flex-1">
+          <svg class="w-4 h-4 text-silver" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="command-input" placeholder="Type a command or ask ZORVANTA..." class="bg-transparent text-white placeholder-silver/50 text-sm focus:outline-none w-full" autofocus />
+        </div>
+        <button onclick="toggleCommandModal(false)" class="text-silver hover:text-white text-xs px-2 py-1 rounded bg-white/10">ESC</button>
+      </div>
+      <div class="p-3 space-y-1 text-xs">
+        <div class="text-[10px] text-silver uppercase px-2 py-1 font-semibold">Quick Actions</div>
+        <button onclick="switchTab('overview'); toggleCommandModal(false);" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-silver hover:text-white flex items-center justify-between">
+          <span>📊 View Multi-Platform Ad Performance Chart</span>
+          <span class="text-[10px] text-silver font-mono">Overview</span>
+        </button>
+        <button onclick="switchTab('create'); toggleCommandModal(false);" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-silver hover:text-white flex items-center justify-between">
+          <span>⚡ Open Zorvanta Create (Content Studio)</span>
+          <span class="text-[10px] text-silver font-mono">Pillar 1</span>
+        </button>
+        <button onclick="switchTab('simulator'); toggleCommandModal(false);" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-silver hover:text-white flex items-center justify-between">
+          <span>💰 Open SaaS Unit Economics Simulator</span>
+          <span class="text-[10px] text-silver font-mono">Financials</span>
+        </button>
+        <button onclick="switchTab('settings'); toggleCommandModal(false);" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-silver hover:text-white flex items-center justify-between">
+          <span>⚙️ Configure AI Engine & Ad Channels</span>
+          <span class="text-[10px] text-silver font-mono">Settings</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION SCRIPT LOGIC -->
+  <script>
+    // --- AUTHENTICATION GATEWAY LOGIC ---
+    function handleSignIn(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const wsRaw = document.getElementById('login-workspace').value;
+      const [wsName, wsPlan, wsCredits, wsInitials] = wsRaw.split('|');
+
+      const firstName = email.split('@')[0].split('.')[0];
+      const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+
+      document.getElementById('welcome-user-name').textContent = formattedName;
+      document.getElementById('header-workspace-name').textContent = wsName;
+      document.getElementById('header-workspace-meta').textContent = `${wsPlan} • ${wsCredits}`;
+      document.getElementById('header-avatar').textContent = wsInitials;
+
+      document.getElementById('auth-gateway').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+
+      initAdChart();
+      showToast(`Signed in to ${wsName} (${wsPlan})`, 'success');
+    }
+
+    function quickDemoLogin(provider) {
+      document.getElementById('auth-gateway').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+      initAdChart();
+      showToast(`Authenticated via ${provider} • Demo Workspace Loaded`, 'success');
+    }
+
+    function handleSignOut() {
+      document.getElementById('app-shell').classList.add('hidden');
+      document.getElementById('auth-gateway').classList.remove('hidden');
+      showToast('Signed out of ZORVANTA session.', 'info');
+    }
+
+    // --- CUSTOM TOAST NOTIFICATION ---
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const borderColor = type === 'success' ? 'border-emerald-400/60' : 'border-silver/30';
+      const dotColor = type === 'success' ? 'bg-emerald-400' : 'bg-silver';
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl bg-navy text-white text-xs border ${borderColor} shadow-command animate-fadeIn`;
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full ${dotColor} shrink-0"></span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.2s ease';
+        setTimeout(() => toast.remove(), 200);
+      }, 3200);
+    }
+
+    // --- CROSS-PLATFORM AD PERFORMANCE CHART (Chart.js) ---
+    let adChartInstance = null;
+    let currentMetric = 'roas';
+    let currentTimeframe = '7d';
+
+    const adChartDatasets = {
+      '7d': {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        roas: {
+          Meta: [4.2, 4.4, 4.5, 4.7, 4.8, 4.9, 4.85],
+          Google: [3.9, 4.0, 4.1, 4.2, 4.3, 4.25, 4.30],
+          LinkedIn: [3.6, 3.7, 3.8, 3.9, 4.0, 3.9, 3.95],
+          TikTok: [4.3, 4.5, 4.8, 4.9, 5.0, 5.2, 5.10],
+          X: [3.0, 3.1, 3.2, 3.15, 3.3, 3.2, 3.25],
+        },
+        conversions: {
+          Meta: [145, 160, 172, 185, 198, 210, 218],
+          Google: [120, 128, 134, 140, 149, 152, 158],
+          LinkedIn: [62, 68, 71, 75, 82, 79, 85],
+          TikTok: [110, 132, 154, 178, 195, 224, 240],
+          X: [45, 48, 50, 49, 53, 51, 54],
+        },
+        spend: {
+          Meta: [1650, 1700, 1780, 1850, 1920, 2000, 2050],
+          Google: [1400, 1420, 1450, 1480, 1510, 1500, 1540],
+          LinkedIn: [950, 980, 1000, 1020, 1050, 1010, 1040],
+          TikTok: [850, 920, 1050, 1150, 1250, 1380, 1450],
+          X: [520, 510, 500, 490, 480, 470, 460],
+        }
+      },
+      '30d': {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        roas: {
+          Meta: [4.1, 4.4, 4.7, 4.85],
+          Google: [3.8, 4.0, 4.2, 4.30],
+          LinkedIn: [3.5, 3.7, 3.85, 3.95],
+          TikTok: [4.0, 4.5, 4.9, 5.10],
+          X: [2.9, 3.1, 3.2, 3.25],
+        },
+        conversions: {
+          Meta: [980, 1120, 1290, 1420],
+          Google: [820, 890, 960, 1040],
+          LinkedIn: [410, 460, 510, 560],
+          TikTok: [740, 950, 1180, 1490],
+          X: [310, 330, 345, 360],
+        },
+        spend: {
+          Meta: [11200, 12100, 13000, 13800],
+          Google: [9500, 9800, 10200, 10600],
+          LinkedIn: [6400, 6800, 7100, 7300],
+          TikTok: [5800, 7100, 8400, 9600],
+          X: [3600, 3500, 3400, 3250],
+        }
+      }
+    };
+
+    function initAdChart() {
+      const ctx = document.getElementById('crossPlatformAdChart');
+      if (!ctx) return;
+      if (adChartInstance) adChartInstance.destroy();
+
+      const dataObj = adChartDatasets[currentTimeframe];
+      const metricData = dataObj[currentMetric];
+
+      adChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dataObj.labels,
+          datasets: [
+            {
+              label: 'Meta Ads',
+              data: metricData.Meta,
+              borderColor: '#101820',
+              backgroundColor: 'rgba(16, 24, 32, 0.08)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3.5,
             },
-            body: JSON.stringify({ email, password })
-          });
-          const data = await readJson(response);
-          if (data.success !== true || typeof data.token !== 'string' || !data.token) {
-            throw new Error(data.message || 'The login response did not include a valid token.');
+            {
+              label: 'TikTok Ads',
+              data: metricData.TikTok,
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.08)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3.5,
+            },
+            {
+              label: 'Google Ads',
+              data: metricData.Google,
+              borderColor: '#3B82F6',
+              backgroundColor: 'rgba(59, 130, 246, 0.08)',
+              borderWidth: 2,
+              tension: 0.35,
+              pointRadius: 3,
+            },
+            {
+              label: 'LinkedIn',
+              data: metricData.LinkedIn,
+              borderColor: '#0EA5E9',
+              backgroundColor: 'rgba(14, 165, 233, 0.08)',
+              borderWidth: 2,
+              tension: 0.35,
+              pointRadius: 3,
+            },
+            {
+              label: 'X (Twitter)',
+              data: metricData.X,
+              borderColor: '#64748B',
+              borderDash: [4, 4],
+              borderWidth: 2,
+              tension: 0.35,
+              pointRadius: 2.5,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                boxWidth: 8,
+                font: { family: 'Inter', size: 11, weight: '600' },
+                color: '#101820'
+              }
+            },
+            tooltip: {
+              backgroundColor: '#101820',
+              titleFont: { family: 'Inter', size: 12, weight: '700' },
+              bodyFont: { family: 'Inter', size: 11 },
+              padding: 10,
+              cornerRadius: 10,
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 11 }, color: '#64748B' }
+            },
+            y: {
+              grid: { color: '#F1F5F9' },
+              ticks: {
+                font: { family: 'Inter', size: 11 },
+                color: '#64748B',
+                callback: function(value) {
+                  if (currentMetric === 'roas') return value + 'x';
+                  if (currentMetric === 'spend') return '$' + value;
+                  return value;
+                }
+              }
+            }
           }
+        }
+      });
+    }
 
-          // sessionStorage limits token persistence to this browser tab session.
-          sessionStorage.setItem(TOKEN_KEY, data.token);
-          document.getElementById('login-password').value = '';
-          showDashboard(true);
-          setStatus(authStatus, '');
-          await loadDashboard(data.token);
-        } catch (error) {
-          const message = error instanceof TypeError
-            ? 'Could not reach the API. Check your connection and backend CORS settings.'
-            : (error.message || 'Sign-in failed. Please try again.');
-          setStatus(authStatus, message, 'error');
-        } finally {
-          loginButton.disabled = false;
+    function updateAdChartMetric(metric) {
+      currentMetric = metric;
+      ['roas', 'conversions', 'spend'].forEach(m => {
+        const btn = document.getElementById(`metric-${m}`);
+        if (btn) {
+          btn.className = m === metric
+            ? 'chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-navy text-white transition-all'
+            : 'chart-metric-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate hover:text-navy transition-all';
+        }
+      });
+      initAdChart();
+    }
+
+    function updateAdChartTimeframe() {
+      currentTimeframe = document.getElementById('chart-timeframe').value;
+      initAdChart();
+    }
+
+    // --- AI OPTIMIZATION & CO-PILOT INTERACTIONS ---
+    function triggerAiOptimization() {
+      document.getElementById('overview-roas').textContent = '4.68x';
+      const feed = document.getElementById('live-agent-feed');
+      feed.insertAdjacentHTML('afterbegin', `
+        <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-start gap-3 animate-fadeIn">
+          <div class="w-8 h-8 rounded-xl bg-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">AI</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-navy">Zorvanta AI • Instant Cross-Channel Rebalance</span>
+              <span class="text-[10px] text-emerald-700 font-semibold">Just now</span>
+            </div>
+            <p class="text-xs text-slate mt-1">Reallocated $310 from low-CTR X campaigns into top-performing TikTok & Meta ad sets. Projected blended ROAS lifted to 4.68x.</p>
+          </div>
+        </div>
+      `);
+      showToast('AI Re-Optimization complete! Blended ROAS projected at 4.68x.', 'success');
+    }
+
+    function handleCopilotSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('copilot-input');
+      const box = document.getElementById('copilot-messages');
+      const text = input.value.trim();
+      if (!text) return;
+
+      box.insertAdjacentHTML('beforeend', `
+        <div class="p-2.5 rounded-xl bg-silver text-navy font-medium ml-6">${text}</div>
+      `);
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+
+      setTimeout(() => {
+        box.insertAdjacentHTML('beforeend', `
+          <div class="p-3 rounded-xl bg-white/10 border border-white/10 text-silver mr-4 animate-fadeIn">
+            <strong class="text-white">AI Co-Pilot:</strong> Executed "${text}". TikTok & Meta pacing rules updated and synced with your Brand DNA guardrails.
+          </div>
+        `);
+        box.scrollTop = box.scrollHeight;
+      }, 450);
+    }
+
+    function saveWorkspaceSettings() {
+      const model = document.getElementById('setting-ai-model').value;
+      document.getElementById('sidebar-model-badge').textContent = `Model: ${model}`;
+      showToast('Workspace settings & AI model routing saved!', 'success');
+    }
+
+    // --- MOBILE SIDEBAR DRAWER ---
+    function toggleMobileSidebar(forceState) {
+      const sidebar = document.getElementById('app-sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : isClosed;
+
+      if (shouldOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    // --- TAB SWITCHING ---
+    const tabs = ['overview', 'create', 'growth', 'automate', 'insights', 'simulator', 'audit', 'code', 'settings'];
+    
+    function switchTab(tabId) {
+      tabs.forEach(t => {
+        const section = document.getElementById(`tab-${t}`);
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (section) section.classList.add('hidden');
+        if (navBtn) {
+          navBtn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-silver hover:bg-white/5 hover:text-white";
         }
       });
 
-      document.getElementById('sign-out-button').addEventListener('click', () => {
-        sessionStorage.removeItem(TOKEN_KEY);
-        document.getElementById('metric-total-users').textContent = '—';
-        document.getElementById('metric-active-projects').textContent = '—';
-        document.getElementById('metric-revenue').textContent = '—';
-        setStatus(dashboardStatus, '');
-        setStatus(authStatus, 'You have signed out.');
-        showDashboard(false);
-      });
-
-      // Restore the authenticated view for an existing tab session and refresh its metrics.
-      const token = sessionStorage.getItem(TOKEN_KEY);
-      if (token) {
-        showDashboard(true);
-        loadDashboard(token);
+      const activeSection = document.getElementById(`tab-${tabId}`);
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeSection) activeSection.classList.remove('hidden');
+      if (activeNav) {
+        activeNav.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-white bg-white/10 border border-silver/25 shadow-subtle";
       }
-    })();
+
+      if (tabId === 'overview') {
+        initAdChart();
+      }
+
+      toggleMobileSidebar(false);
+      const mainEl = document.querySelector('main');
+      if (mainEl) mainEl.scrollTop = 0;
+    }
+
+    // --- COMMAND PALETTE TOGGLE (⌘K / Esc) ---
+    function toggleCommandModal(show) {
+      const modal = document.getElementById('command-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+        document.getElementById('command-input').focus();
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleCommandModal(true);
+      }
+      if (e.key === 'Escape') {
+        toggleCommandModal(false);
+      }
+    });
+
+    // --- SIMULATE ASSET GENERATION ---
+    function simulateAssetGeneration() {
+      const container = document.getElementById('create-results-container');
+      container.innerHTML = `
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 animate-fadeIn">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-emerald-950">✓ Campaign Kit Generated Successfully</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono">Brand DNA Vault Verified</span>
+          </div>
+          <p class="text-xs text-emerald-900 mb-2"><strong>Hook:</strong> "Stop managing 14 open tabs. ZORVANTA unifies your entire growth stack."</p>
+          <p class="text-xs text-emerald-900"><strong>Carousel Slide 1:</strong> The Old Way (Fragmented tools) vs <strong>Slide 2:</strong> The ZORVANTA Way (Closed-loop AI).</p>
+        </div>
+      `;
+      showToast('New multi-channel campaign kit generated!', 'success');
+    }
+
+    // --- INSIGHTS CHAT ANALYST ---
+    function sendAnalystQuery() {
+      const input = document.getElementById('analyst-input');
+      const history = document.getElementById('analyst-chat-history');
+      const query = input.value.trim();
+      if (!query) return;
+
+      history.innerHTML += `
+        <div class="p-3 rounded-xl bg-navy text-white text-xs ml-6">
+          <strong>You:</strong> ${query}
+        </div>
+      `;
+      input.value = '';
+
+      setTimeout(() => {
+        history.innerHTML += `
+          <div class="p-3 rounded-xl bg-canvas border border-[#E2E8F0] text-xs text-navy mr-6 animate-fadeIn">
+            <strong>Zorvanta Analyst:</strong> Across your 5 connected ad apps, TikTok Ads leads efficiency at 5.10x ROAS (+34% conversion lift), followed by Meta Ads at 4.85x ROAS.
+          </div>
+        `;
+        history.scrollTop = history.scrollHeight;
+      }, 450);
+    }
+
+    // --- SAAS UNIT ECONOMICS SIMULATOR ---
+    function formatCurrency(num) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
+    }
+    function formatNumber(num) {
+      return new Intl.NumberFormat('en-US').format(num);
+    }
+
+    function updateSim() {
+      const starterCount = parseInt(document.getElementById('slider-starter').value, 10);
+      const growthCount = parseInt(document.getElementById('slider-growth').value, 10);
+      const agencyCount = parseInt(document.getElementById('slider-agency').value, 10);
+
+      const costPer1k = parseFloat(document.getElementById('slider-inference').value);
+      const fixedOverhead = parseInt(document.getElementById('slider-overhead').value, 10);
+
+      document.getElementById('val-starter-count').textContent = formatNumber(starterCount);
+      document.getElementById('val-growth-count').textContent = formatNumber(growthCount);
+      document.getElementById('val-agency-count').textContent = formatNumber(agencyCount);
+      document.getElementById('val-inference-cost').textContent = '$' + costPer1k.toFixed(2);
+      document.getElementById('val-overhead').textContent = formatCurrency(fixedOverhead);
+
+      const totalSubs = starterCount + growthCount + agencyCount;
+      document.getElementById('total-subscribers-badge').textContent = formatNumber(totalSubs) + ' Subs';
+
+      const mrrStarter = starterCount * 79;
+      const mrrGrowth = growthCount * 249;
+      const mrrAgency = agencyCount * 699;
+      const totalMRR = mrrStarter + mrrGrowth + mrrAgency;
+      const totalARR = totalMRR * 12;
+      const blendedARPU = totalSubs > 0 ? Math.round(totalMRR / totalSubs) : 0;
+
+      document.getElementById('mrr-starter').textContent = formatCurrency(mrrStarter);
+      document.getElementById('mrr-growth').textContent = formatCurrency(mrrGrowth);
+      document.getElementById('mrr-agency').textContent = formatCurrency(mrrAgency);
+
+      const creditsMonthly = (starterCount * 2500 + growthCount * 12000 + agencyCount * 45000) * 0.75;
+      const totalInferenceCost = Math.round((creditsMonthly / 1000.0) * costPer1k);
+
+      const grossProfit = totalMRR - totalInferenceCost;
+      const grossMarginPercent = totalMRR > 0 ? Math.round((grossProfit / totalMRR) * 100) : 0;
+      const netProfit = grossProfit - fixedOverhead;
+      const effectiveMarginPercent = totalMRR > 0 ? Math.round((netProfit / totalMRR) * 100) : 0;
+
+      document.getElementById('kpi-mrr').textContent = formatCurrency(totalMRR);
+      document.getElementById('kpi-arr-badge').textContent = 'ARR: ' + formatCurrency(totalARR);
+      document.getElementById('kpi-arpu').textContent = formatCurrency(blendedARPU) + ' / mo';
+
+      document.getElementById('kpi-margin').textContent = grossMarginPercent + '%';
+      document.getElementById('kpi-gross-profit').textContent = formatCurrency(grossProfit);
+
+      document.getElementById('kpi-inference-cost').textContent = formatCurrency(totalInferenceCost);
+      document.getElementById('kpi-total-credits').textContent = (creditsMonthly / 1000000).toFixed(2) + 'M / mo';
+
+      document.getElementById('kpi-net-profit').textContent = formatCurrency(netProfit);
+      document.getElementById('kpi-fixed-overhead-display').textContent = formatCurrency(fixedOverhead);
+
+      const netBadge = document.getElementById('kpi-net-badge');
+      if (netProfit >= 0) {
+        netBadge.textContent = 'Profitable (' + effectiveMarginPercent + '%)';
+        netBadge.className = 'text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full';
+      } else {
+        netBadge.textContent = 'Operating Loss';
+        netBadge.className = 'text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-full';
+      }
+
+      document.getElementById('wf-mrr').textContent = formatCurrency(totalMRR);
+      document.getElementById('wf-inference').textContent = '-' + formatCurrency(totalInferenceCost);
+      document.getElementById('wf-gross').textContent = formatCurrency(grossProfit);
+      document.getElementById('wf-overhead').textContent = '-' + formatCurrency(fixedOverhead);
+      document.getElementById('wf-net').textContent = formatCurrency(netProfit);
+
+      document.getElementById('analyst-insights-text').textContent = `Unit economics running at ${grossMarginPercent}% gross margin. Net operating profit is ${formatCurrency(netProfit)}/mo with blended ARPU of ${formatCurrency(blendedARPU)}.`;
+    }
+
+    // --- BRAND DNA AUDIT LEAD MAGNET ---
+    function runBrandAudit() {
+      const urlInput = document.getElementById('audit-url-input').value || 'stripe.com';
+      const resultsDiv = document.getElementById('audit-results');
+      const domainTag = document.getElementById('audit-domain-tag');
+      const summaryText = document.getElementById('audit-summary-text');
+      const grid = document.getElementById('audit-concepts-grid');
+
+      domainTag.textContent = urlInput;
+      summaryText.textContent = `Extracted brand voice for ${urlInput}: Professional, authoritative tone with modern minimalist aesthetics and high conversion focus.`;
+
+      grid.innerHTML = `
+        <div class="p-4 rounded-xl bg-[#171923] border border-silver/20 flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-silver/10 text-silver font-mono">Meta Feed</span>
+            <h4 class="font-semibold text-white text-xs mt-2 mb-1">"Intelligence. Simplified for ${urlInput}."</h4>
+            <p class="text-[11px] text-slate">Autonomous marketing execution across all four core pillars without prompt fatigue.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-silver/10 text-[11px] text-silver font-semibold">CTA: Start Free Trial</div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#171923] border border-silver/20 flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-silver/10 text-silver font-mono">LinkedIn B2B</span>
+            <h4 class="font-semibold text-white text-xs mt-2 mb-1">"Stop Managing 14 Open Tabs."</h4>
+            <p class="text-[11px] text-slate">Unify AI content creation, media buying, and analytics in one Midnight Navy workspace.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-silver/10 text-[11px] text-silver font-semibold">CTA: Request Demo</div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#171923] border border-silver/20 flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-silver/10 text-silver font-mono">TikTok & Google</span>
+            <h4 class="font-semibold text-white text-xs mt-2 mb-1">"Autonomous Growth Platform"</h4>
+            <p class="text-[11px] text-slate">Real-time budget pacing and closed-loop insights built for modern marketing agencies.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-silver/10 text-[11px] text-silver font-semibold">CTA: Explore Platform</div>
+        </div>
+      `;
+
+      resultsDiv.classList.remove('hidden');
+      showToast(`Brand DNA extracted for ${urlInput}`, 'success');
+    }
+
+    // --- PRODUCTION CODE REFERENCE VIEWER ---
+    const codeSnippets = {
+      fastapi: `from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from database import get_verified_tenant_db
+from auth import TenantAuthContext, require_roles
+
+app = FastAPI(title="ZORVANTA Core API", version="1.0.0")
+
+@app.post("/api/v1/brand-dna/ingest")
+async def ingest_brand_dna_endpoint(
+    payload: BrandDNAIngestRequest,
+    ctx: TenantAuthContext = Depends(require_roles("owner", "admin", "member")),
+):
+    chunks_stored = await ingest_brand_dna(
+        session=ctx.session,
+        tenant_id=ctx.tenant_id,
+        source_type=payload.source_type,
+        source_title=payload.source_title,
+        raw_text=payload.content,
+    )
+    return {"status": "indexed", "tenant_id": str(ctx.tenant_id), "chunks": chunks_stored}`,
+
+      clerk: `from fastapi import Depends, HTTPException, Header
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+import jwt
+from jwt import PyJWKClient
+from sqlalchemy import text
+from config import settings
+from database import AsyncSessionLocal
+
+jwks_client = PyJWKClient(settings.CLERK_JWKS_URL, cache_keys=True)
+bearer_scheme = HTTPBearer()
+
+async def get_verified_tenant_db(
+    x_tenant_id: str = Header(...),
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+):
+    token = credentials.credentials
+    signing_key = jwks_client.get_signing_key_from_jwt(token)
+    claims = jwt.decode(token, signing_key.key, algorithms=["RS256"], issuer=settings.CLERK_ISSUER)
+    clerk_user_id = claims.get("sub")
+    
+    async with AsyncSessionLocal() as session:
+        async with session.begin():
+            await session.execute(text("SELECT set_config('app.current_tenant_id', :tid, true)"), {"tid": x_tenant_id})
+            res = await session.execute(text("SELECT role FROM tenant_users WHERE tenant_id = :tid AND user_id = :uid"), {"tid": x_tenant_id, "uid": clerk_user_id})
+            if not res.fetchone():
+                raise HTTPException(status_code=403, detail="Workspace access denied.")
+            yield session`,
+
+      client: `import { useAuth } from "@clerk/nextjs";
+
+export function useZorvantaApi() {
+  const { getToken } = useAuth();
+
+  async function client<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    const token = await getToken();
+    const tenantId = localStorage.getItem("zorvanta_active_tenant_id");
+
+    const headers = new Headers(options.headers);
+    if (token) headers.set("Authorization", \`Bearer \${token}\`);
+    if (tenantId) headers.set("X-Tenant-ID", tenantId);
+    headers.set("Content-Type", "application/json");
+
+    const res = await fetch(\`https://zovanta-api-1.onrender.com\${endpoint}\`, { ...options, headers });
+    if (!res.ok) throw new Error(\`ZORVANTA API Error: \${res.statusText}\`);
+    return res.json();
+  }
+
+  return {
+    post: <T>(endpoint: string, body: any) => client<T>(endpoint, { method: "POST", body: JSON.stringify(body) }),
+    get: <T>(endpoint: string) => client<T>(endpoint, { method: "GET" }),
+  };
+}`,
+
+      sql: `-- ZORVANTA Multi-Tenant RLS & Brand DNA Schema
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE tenants (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    subscription_tier TEXT NOT NULL DEFAULT 'starter',
+    intelligence_credits_balance INT NOT NULL DEFAULT 2500
+);
+
+CREATE TABLE brand_dna_vault (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    source_title TEXT NOT NULL,
+    chunk_content TEXT NOT NULL,
+    embedding VECTOR(1536)
+);
+
+ALTER TABLE brand_dna_vault ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY tenant_isolation_policy ON brand_dna_vault
+    FOR ALL USING (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::UUID);`
+    };
+
+    function switchCodeTab(lang) {
+      ['fastapi', 'clerk', 'client', 'sql'].forEach(l => {
+        const btn = document.getElementById(`codetab-${l}`);
+        if (btn) btn.className = "code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold text-slate hover:text-navy";
+      });
+      const activeBtn = document.getElementById(`codetab-${lang}`);
+      if (activeBtn) activeBtn.className = "code-tab px-4 py-2.5 rounded-t-xl text-xs font-semibold bg-white border-t border-x border-[#E2E8F0] text-navy";
+
+      document.getElementById('code-content-view').textContent = codeSnippets[lang];
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSim();
+      switchCodeTab('fastapi');
+    });
   </script>
 </body>
-</html>
+                  </html>
